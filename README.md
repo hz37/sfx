@@ -16,17 +16,25 @@ data.txt
 This text file lists all the WAV files and their descriptions. The first line is ignored, so it can be used for a small description of its purpose. A typical data file might look like this:
 
 Data for sfx (this line is ignored).
+
 Sound of a frog
+
 animals\frog.wav
+
 Sound of a tiger
+
 animals\tiger.wav
+
 High speed train passing by
+
 transport\fast train.wav
 
 Combined with the above CONFIG.TXT, this will only work if the following files exist on the system:
 
 D:\SFX\animals\frog.wav
+
 D:\SFX\animals\tiger.wav
+
 D:\SFX\transport\fast train.wav
 
 info
