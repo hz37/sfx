@@ -1,0 +1,39 @@
+@@@ Hz37 DATA @@@
+Hollywood
+aap\edge.wav
+Een synthetisch geluid met spatie in de naam in aap dir|Een synthetisch geluid met spatie in de naam in aap dir|ff
+aap\SyntheticDesign _68_1.wav
+Een synthetisch geluid met spatie in de naam in "root" dir
+aap\SyntheticDesign _92_2.wav
+Een synthetisch geluid met nonspatie in de naam in "root" dir
+aap\SyntheticDesign_92_2.wav
+aap 1
+aap\SynthVarious _42_23.wav
+aap 2
+aap\SynthVarious _42_4.wav
+aap 3
+aap\SynthVarious _41_2.wav
+aap 4
+aap\SynthVarious _36_3.wav
+aap 5
+aap\SynthVarious _35_2.wav
+aap 6
+aap\SynthVarious _33_4.wav
+aap 7
+aap\SynthVarious _33_3.wav
+aap 8
+aap\SynthVarious _33_.wav
+aap 9
+aap\SynthVarious _31_3.wav
+aap 10
+aap\SynthVarious _31_2.wav
+aap 11
+aap\SynthVarious _31_1.wav
+aap 12
+aap\SynthVarious _30_2.wav
+aap 13
+aap\SynthVarious _27_3.wav
+aap 14
+aap\SynthVarious _27_1.wav
+aap 15
+aap\SynthVarious _20.wav

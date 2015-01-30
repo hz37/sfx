@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxFrame" name="MetadataFrame">
+		<title>Metadata</title>
+		<size>453,361</size>
+		<id_arg>0</id_arg>
+		<style>wxSTAY_ON_TOP|wxDEFAULT_FRAME_STYLE|wxRESIZE_BORDER|wxCLOSE_BOX</style>
+		<object class="wxBoxSizer" variable="BoxSizer1" member="no">
+			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<object class="wxTextCtrl" name="ID_METADATATEXTCTRL" variable="MetadataTextCtrl" member="yes">
+					<size>438,317</size>
+					<bg>wxSYS_COLOUR_SCROLLBAR</bg>
+					<font>
+						<size>10</size>
+						<style>normal</style>
+						<weight>normal</weight>
+						<underlined>0</underlined>
+						<family>swiss</family>
+						<face>Arial</face>
+					</font>
+					<style>wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP|wxNO_BORDER|wxVSCROLL|wxHSCROLL</style>
+				</object>
+				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<border>1</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
+				<object class="wxButton" name="ID_CLOSEBUTTON" variable="CloseButton" member="yes">
+					<label>Close</label>
+					<default>1</default>
+					<size>310,32</size>
+					<handler function="OnCloseButtonClick" entry="EVT_BUTTON" />
+				</object>
+				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+			</object>
+		</object>
+	</object>
+</wxsmith>

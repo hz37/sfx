@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1422569139 source:c:\users\hens\documents\sfx\textbuilder\textbuilder\main.cpp
+	<algorithm>
+	<iostream>
+	<string>
+	<vector>
+	<windows.h>
+
