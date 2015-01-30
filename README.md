@@ -50,6 +50,6 @@ A simple python script that checks if all the files are in their proper location
 info
 ====
 
-Hens Zimmerman
+Hens Zimmerman  
 hz37@xs4all.nl
 
