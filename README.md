@@ -17,7 +17,7 @@ data.txt
 
 This text file lists all the WAV files and their descriptions. The first line is ignored, so it can be used for a small description of its purpose. A typical data file might look like this:
 
-* * * Data for sfx (this line is ignored).  
+Data for sfx (this line is ignored).  
 Sound of a frog  
 animals\frog.wav  
 Sound of a tiger  
