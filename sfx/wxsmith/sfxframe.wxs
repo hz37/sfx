@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <wxsmith>
 	<object class="wxFrame" name="sfxFrame">
-		<title>SFX 1.31</title>
+		<title>SFX 1.32</title>
 		<size>979,363</size>
 		<bg>#89EA48</bg>
 		<id_arg>0</id_arg>

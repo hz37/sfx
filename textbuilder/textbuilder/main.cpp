@@ -1,10 +1,33 @@
+/*
+
+A simple Windows console program that scans a sound effects directory
+and turns it into the right data.txt and config.txt files for sfx to run.
+It assumes the filenames are the labels of the sound effect files.
+
+data.txt is written in its proper location, i.e. at the start of the
+tree where all the sound effects are located.
+
+config.txt is written in the current directory.
+
+Hens Zimmerman, Code::Blocks 13.12.
+henszimmerman@gmail.com
+Jan. 30, 2015.
+
+*/
+
 #include <algorithm>
+#include <ctime>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
 
+// This console program is platform specific for Windows.
+
 #include <windows.h>
+
+
+// A simple struct to populate a vector.
 
 struct TSFXRecord
 {
@@ -13,6 +36,7 @@ struct TSFXRecord
     friend bool operator < (const TSFXRecord& rec1, const TSFXRecord& rec2);
 };
 
+
 // Non-class (friend) function, needed by STL sort() algorithm.
 
 bool operator < (const TSFXRecord& rec1, const TSFXRecord& rec2)
@@ -20,19 +44,30 @@ bool operator < (const TSFXRecord& rec1, const TSFXRecord& rec2)
   return rec1.label < rec2.label;
 }
 
+
+// Helper function to extract a file extension.
+
 size_t find_file_ext_idx(const char* fileName)
 {
     size_t len = strlen(fileName);
-    size_t idx = len-1;
-    for(size_t i = 0; *(fileName+i); i++) {
-        if (*(fileName+i) == '.') {
+    size_t idx = len - 1;
+
+    for(size_t i = 0; *(fileName+i); i++)
+    {
+        if (*(fileName+i) == '.')
+        {
             idx = i;
-        } else if (*(fileName + i) == '/' || *(fileName + i) == '\\') {
+        } else if (*(fileName + i) == '/' || *(fileName + i) == '\\')
+        {
             idx = len - 1;
         }
     }
+
     return idx + 1;
 }
+
+
+// Function to extract file extension.
 
 std::string get_file_ext(const char* fileName)
 {
@@ -43,6 +78,9 @@ std::string get_file_ext(const char* fileName)
     return ext;
 }
 
+
+// Guarantee that directory ends with a backslash.
+
 std::string include_trailing_backslash(const std::string directory)
 {
     if(*directory.rbegin() != '\\')
@@ -52,6 +90,9 @@ std::string include_trailing_backslash(const std::string directory)
 
     return directory;
 }
+
+
+// Return true if directory is an existing directory.
 
 bool is_directory(const char* directory)
 {
@@ -68,6 +109,9 @@ bool is_directory(const char* directory)
 
     return (win32FindData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
 }
+
+
+// Strip a full path plus filename and turn it into a label.
 
 std::string filename_to_label(const std::string filename)
 {
@@ -97,6 +141,10 @@ std::string filename_to_label(const std::string filename)
 
     return label;
 }
+
+
+// Recursive function to scan directory for .wav files.
+// Found files are stored in out, together with their label.
 
 void tree(const std::string directory, std::vector <TSFXRecord>& out)
 {
@@ -143,6 +191,9 @@ void tree(const std::string directory, std::vector <TSFXRecord>& out)
     FindClose(FindHandle);
 }
 
+
+// main()
+
 int main(int argc, char* argv[])
 {
     if(argc != 2)
@@ -169,9 +220,22 @@ int main(int argc, char* argv[])
 
     // Write datafile.
 
+    std::cout << "Writing data.txt in " << sfx_directory << std::endl;
+
     std::ofstream data_file((sfx_directory + "data.txt").c_str());
 
-    data_file << "* * * machine generated data file * * *" << std::endl;
+    // Print first line to file with some info.
+
+    time_t rawtime;
+    struct tm* timeinfo;
+    char buffer[80];
+
+    time(&rawtime);
+    timeinfo = localtime (&rawtime);
+
+    strftime (buffer, 80, "%d-%m-%Y", timeinfo);
+
+    data_file << "# machine generated data file - " << buffer << std::endl;
 
     // Now for every record we will chop off the common start directory portion at the beginning of the filename.
 
@@ -184,6 +248,18 @@ int main(int argc, char* argv[])
     }
 
     data_file.close();
+
+    // Write config file.
+
+    std::cout << "Writing config.txt in current directory" << std::endl;
+
+    std::ofstream config_file("config.txt");
+
+    config_file << sfx_directory << std::endl;
+
+    config_file.close();
+
+    std::cout << "All done! Make sure config.txt is in the same dir as sfx.exe" << std::endl;
 
     return 0;
 }

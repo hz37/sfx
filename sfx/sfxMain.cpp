@@ -11,6 +11,7 @@
 #include <wx/msgdlg.h>
 #include <wx/dnd.h>
 #include <wx/filename.h>
+#include <wx/kbdstate.h>
 #include <wx/tooltip.h>
 #include <wx/regex.h>
 
@@ -82,7 +83,7 @@ sfxFrame::sfxFrame(wxWindow* parent,wxWindowID id)
     wxBoxSizer* BoxSizer3;
     wxMenu* Menu2;
 
-    Create(parent, wxID_ANY, _("SFX 1.31"), wxDefaultPosition, wxDefaultSize, wxSTAY_ON_TOP|wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
+    Create(parent, wxID_ANY, _("SFX 1.32"), wxDefaultPosition, wxDefaultSize, wxSTAY_ON_TOP|wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
     SetClientSize(wxSize(979,363));
     SetBackgroundColour(wxColour(137,234,72));
     BoxSizer1 = new wxBoxSizer(wxVERTICAL);
@@ -227,7 +228,7 @@ void sfxFrame::OnAbout(wxCommandEvent& event)
 {
     wxMessageBox
     (
-        _("Programming by H.Zimmerman\nVersion: June 1, 2014."),
+        _("Programming: Hens Zimmerman\nEmail: hz37@xs4all.nl\nVersion: January 30, 2015."),
         _("About...")
     );
 }
@@ -302,6 +303,18 @@ void sfxFrame::OnTopmostCheckBoxClick(wxCommandEvent& event)
 
 void sfxFrame::OnSaveFolderButtonClick(wxCommandEvent& event)
 {
+    // Pressing the shift is an easy way to erase the save folder again.
+
+    wxKeyboardState ks;
+
+    if(ks.ShiftDown())
+    {
+        m_saveFolder = "";
+        SaveToFolderButton->Disable();
+
+        return;
+    }
+
     if(DirDialog1->ShowModal())
     {
         m_saveFolder = includeTrailingBackslash(DirDialog1->GetPath());
