@@ -2105,7 +2105,7 @@
 
 1389081972 c:\wxwidgets-3.0.0\include\wx\cocoa\dirdlg.h
 
-1401649039 source:c:\users\hens\documents\sfx\sfx\sfxmain.cpp
+1404416321 source:c:\users\hens\documents\sfx\sfx\sfxmain.cpp
 	"sfxMain.h"
 	<wx/msgdlg.h>
 	<wx/dnd.h>
@@ -2155,13 +2155,14 @@
 	<wx/string.h>
 	<vector>
 
-1401649039 source:c:\users\hens\documents\sfx\sfx\model.cpp
+1411163279 source:c:\users\hens\documents\sfx\sfx\model.cpp
 	"model.h"
 	<wx/stdpaths.h>
 	<wx/filefn.h>
 	<wx/textfile.h>
 	<wx/tokenzr.h>
 	<wx/filename.h>
+	<wx/volume.h>
 	"C:/gitroot/taglib-1.9.1/taglib/tag.h"
 	"C:/gitroot/taglib-1.9.1/taglib/fileref.h"
 	"C:/gitroot/taglib-1.9.1/taglib/toolkit/tpropertymap.h"
@@ -2465,4 +2466,10 @@
 	"taglib_export.h"
 	"tbytevector.h"
 	"tlist.h"
+
+1389081966 c:\wxwidgets-3.0.0\include\wx\volume.h
+	"wx/defs.h"
+	"wx/arrstr.h"
+	"wx/icon.h"
+	"wx/iconbndl.h"
 

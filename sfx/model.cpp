@@ -5,10 +5,11 @@
 #include <wx/textfile.h>
 #include <wx/tokenzr.h>
 #include <wx/filename.h>
+#include <wx/volume.h>
 
-#include "C:/gitroot/taglib-1.9.1/taglib/tag.h"
-#include "C:/gitroot/taglib-1.9.1/taglib/fileref.h"
-#include "C:/gitroot/taglib-1.9.1/taglib/toolkit/tpropertymap.h"
+//#include "C:/gitroot/taglib-1.9.1/taglib/tag.h"
+//#include "C:/gitroot/taglib-1.9.1/taglib/fileref.h"
+//#include "C:/gitroot/taglib-1.9.1/taglib/toolkit/tpropertymap.h"
 // #include "C:/gitroot/taglib-1.9.1/taglib/riff/wav/wavfile.h"
 
 model::model() :
@@ -43,6 +44,34 @@ model::model() :
     // Update 01-06-2014: file is now read from sfx root.
 
     wxString dataFilename = m_sfxRootDirectory + _("data.txt");
+
+    // Drive may be mounted but (temporarily) on a different drive designator.
+    // Let sfx enumerate all available drives to see if this is the case
+    // and if so, silently repair this situation for now. Failure is not an option. 19-09-2014.
+
+    if(!wxFileExists(dataFilename))
+    {
+        wxArrayString availableVolumes;
+
+        availableVolumes = wxFSVolume::GetVolumes(wxFS_VOL_MOUNTED, 0);
+
+        for(wxArrayString::iterator idx = availableVolumes.begin(); idx != availableVolumes.end(); ++idx)
+        {
+            wxString drive = *idx;
+
+            if(drive.length() > 0)
+            {
+                dataFilename[0] = drive[0];
+
+                if(wxFileExists(dataFilename))
+                {
+                    // Done, we've hunted down the (temporary?) new location of our sound effect drive.
+
+                    break;
+                }
+            }
+        }
+    }
 
     if(wxFileExists(dataFilename))
     {
@@ -150,6 +179,7 @@ wxString model::fileNameAt(const int index)
 
 wxString model::metaData(wxString filename)
 {
+    /*
     wxString metaData;
 
     const char* filenameAsCharBuffer = filename.mb_str(wxConvUTF8);
@@ -185,6 +215,9 @@ wxString model::metaData(wxString filename)
     }
 
     return metaData;
+    */
+
+    return "Not implemented";
 }
 
 // Do case insensitive search.

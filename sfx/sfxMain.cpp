@@ -305,9 +305,9 @@ void sfxFrame::OnSaveFolderButtonClick(wxCommandEvent& event)
 {
     // Pressing the shift is an easy way to erase the save folder again.
 
-    wxKeyboardState ks;
+    SHORT KeyState = GetAsyncKeyState(VK_SHIFT);
 
-    if(ks.ShiftDown())
+    if(KeyState)
     {
         m_saveFolder = "";
         SaveToFolderButton->Disable();
