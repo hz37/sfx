@@ -50,12 +50,10 @@ DetailDialog::DetailDialog
     wxWindow* parent,
     wxString filename,
     wxString description,
-    wxString storageDirectory,
     wxWindowID id,
     const wxPoint& pos
 ) :
     m_filename(filename),
-    m_storageDirectory(storageDirectory),
     m_tempWavCounter(0),
     m_channels(0),
     m_frameCount(0),
@@ -65,8 +63,7 @@ DetailDialog::DetailDialog
     m_sel2(0),
     m_selStart(c_minSel),
     m_selStop(c_maxSel),
-    m_selecting(false),
-    m_customDirectoryProvided(false)
+    m_selecting(false)
 {
     // Create a buffer in which we will draw the waveform.
 
@@ -75,20 +72,20 @@ DetailDialog::DetailDialog
 
 	//(*Initialize(DetailDialog)
 	Create(parent, id, _("Detail"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
-	SetClientSize(wxSize(517,257));
+	SetClientSize(wxSize(517,247));
 	Move(wxDefaultPosition);
-	StaticBox1 = new wxStaticBox(this, ID_STATICBOX1, _("Details"), wxPoint(8,8), wxSize(500,96), 0, _T("ID_STATICBOX1"));
-	StaticText3 = new wxStaticText(this, ID_STATICTEXT3, _("Channels:"), wxPoint(16,56), wxDefaultSize, 0, _T("ID_STATICTEXT3"));
-	StaticText4 = new wxStaticText(this, ID_STATICTEXT4, _("Sample rate:"), wxPoint(16,80), wxDefaultSize, 0, _T("ID_STATICTEXT4"));
-	StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Description:"), wxPoint(16,32), wxDefaultSize, 0, _T("ID_STATICTEXT1"));
-	DescriptionStaticText = new wxStaticText(this, ID_STATICTEXT5, _("-"), wxPoint(88,32), wxDefaultSize, 0, _T("ID_STATICTEXT5"));
-	Panel1 = new wxPanel(this, ID_PANEL1, wxPoint(8,112), wxSize(500,100), wxTAB_TRAVERSAL, _T("ID_PANEL1"));
+	StaticBox1 = new wxStaticBox(this, ID_STATICBOX1, wxEmptyString, wxPoint(8,8), wxSize(500,88), 0, _T("ID_STATICBOX1"));
+	StaticText3 = new wxStaticText(this, ID_STATICTEXT3, _("Channels:"), wxPoint(16,48), wxDefaultSize, 0, _T("ID_STATICTEXT3"));
+	StaticText4 = new wxStaticText(this, ID_STATICTEXT4, _("Sample rate:"), wxPoint(16,72), wxDefaultSize, 0, _T("ID_STATICTEXT4"));
+	StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Description:"), wxPoint(16,24), wxDefaultSize, 0, _T("ID_STATICTEXT1"));
+	DescriptionStaticText = new wxStaticText(this, ID_STATICTEXT5, _("--------"), wxPoint(88,24), wxDefaultSize, 0, _T("ID_STATICTEXT5"));
+	Panel1 = new wxPanel(this, ID_PANEL1, wxPoint(8,104), wxSize(500,100), wxTAB_TRAVERSAL, _T("ID_PANEL1"));
 	Panel1->SetBackgroundColour(wxColour(0,0,0));
-	PlayButton = new wxButton(this, ID_BUTTON1, _("Play"), wxPoint(8,224), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
-	StopButton = new wxButton(this, ID_BUTTON2, _("Stop"), wxPoint(96,224), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
-	ExitButton = new wxButton(this, ID_BUTTON3, _("Exit"), wxPoint(432,224), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
-	ChannelsStaticText = new wxStaticText(this, ID_STATICTEXT7, _("-"), wxPoint(88,56), wxDefaultSize, 0, _T("ID_STATICTEXT7"));
-	SamplerateStaticText = new wxStaticText(this, ID_STATICTEXT8, _("-"), wxPoint(88,80), wxDefaultSize, 0, _T("ID_STATICTEXT8"));
+	PlayButton = new wxButton(this, ID_BUTTON1, _("Play"), wxPoint(8,216), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
+	StopButton = new wxButton(this, ID_BUTTON2, _("Stop"), wxPoint(96,216), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
+	ExitButton = new wxButton(this, ID_BUTTON3, _("Exit"), wxPoint(432,216), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
+	ChannelsStaticText = new wxStaticText(this, ID_STATICTEXT7, _("-------"), wxPoint(88,48), wxDefaultSize, 0, _T("ID_STATICTEXT7"));
+	SamplerateStaticText = new wxStaticText(this, ID_STATICTEXT8, _("-------"), wxPoint(88,72), wxDefaultSize, 0, _T("ID_STATICTEXT8"));
 	Center();
 
 	Panel1->Connect(wxEVT_PAINT,(wxObjectEventFunction)&DetailDialog::OnPanel1Paint,0,this);
@@ -108,12 +105,7 @@ DetailDialog::DetailDialog
 
 	// Set up a path for the temp files.
 
-    m_customDirectoryProvided = wxDirExists(m_storageDirectory);
-
-    if(!m_customDirectoryProvided)
-    {
-        m_storageDirectory = includeTrailingBackslash(wxStandardPaths::Get().GetTempDir());
-    }
+    m_storageDirectory = includeTrailingBackslash(wxStandardPaths::Get().GetTempDir());
 
     // Load the WAV file that was passed to this dialog.
 
@@ -126,7 +118,7 @@ DetailDialog::DetailDialog
     ChannelsStaticText->SetLabel(channels);
 
     wxString samplerate;
-    samplerate << m_sampleRate;
+    samplerate << m_sampleRate << " Hz";
     SamplerateStaticText->SetLabel(samplerate);
 
     // Remember description to use as a prefix for the WAV filename we generate.
@@ -137,6 +129,8 @@ DetailDialog::DetailDialog
 
 DetailDialog::~DetailDialog()
 {
+    m_sound.Stop();
+
 	//(*Destroy(DetailDialog)
 	//*)
 
@@ -153,9 +147,9 @@ DetailDialog::~DetailDialog()
     }
 }
 
-bool DetailDialog::CreateWavFile(wxString& fileName, bool cueForDeletion)
+bool DetailDialog::CreateWavFile(wxString& fileName)
 {
-    if(!m_waveData.get() || (m_selStart == m_selStop))
+    if(!m_waveData.get() || (m_selStart >= m_selStop))
     {
         // Nothing to do.
         return false;
@@ -206,15 +200,12 @@ bool DetailDialog::CreateWavFile(wxString& fileName, bool cueForDeletion)
     }
 
     // File is created. Store in vector so we can clean up afterwards.
-    // For the file that is dragged into the timeline AND stored in a special dir,
-    // we do not cue the file for deletion.
 
-    if(cueForDeletion)
-    {
-        m_tempFiles.push_back(fileName);
-    }
+    m_tempFiles.push_back(fileName);
 
     // Write current selection to this file.
+    // The fixed pixel wav display makes it so that the selection granularity
+    // is dictated by the length of the file.
 
     int delta = m_frameCount / waveDisplayWidth;
 
@@ -397,7 +388,7 @@ void DetailDialog::OnExitButtonClick(wxCommandEvent& event)
     Close();
 }
 
-void DetailDialog::OnPlayButtonClick(wxCommandEvent& event)
+void DetailDialog::PlayCurrentSelection()
 {
     wxString fileName;
 
@@ -407,6 +398,11 @@ void DetailDialog::OnPlayButtonClick(wxCommandEvent& event)
 
         m_sound.Play(wxSOUND_ASYNC);
     }
+}
+
+void DetailDialog::OnPlayButtonClick(wxCommandEvent& event)
+{
+    PlayCurrentSelection();
 }
 
 void DetailDialog::OnStopButtonClick(wxCommandEvent& event)
@@ -454,10 +450,6 @@ void DetailDialog::OnPanel1Paint(wxPaintEvent& event)
         wxCOPY,
         false
     );
-
-
-    // No can't do:
-    //destDC.SelectObject(wxNullBitmap);
 }
 
 void DetailDialog::OnPanel1EraseBackground(wxEraseEvent& event)
@@ -471,9 +463,13 @@ void DetailDialog::OnPanel1LeftDown(wxMouseEvent& event)
     {
         // Lower half is for grabbing a selection, much like Pro Tools multi tool.
 
+        // If user starts a'dragging, we can be sure they no longer want to hear the selection playing.
+
+        m_sound.Stop();
+
         wxString fileName;
 
-        if(CreateWavFile(fileName, !m_customDirectoryProvided))
+        if(CreateWavFile(fileName))
         {
             wxFileDataObject* data = new wxFileDataObject();
 
@@ -490,15 +486,40 @@ void DetailDialog::OnPanel1LeftDown(wxMouseEvent& event)
     else
     {
         // Upper half of waveform is for selecting, much like Pro Tools multi tool.
+        // With Shift pressed we can extend selection.
 
         m_selecting = true;
-        m_sel1 = event.GetX();
+
+        if(GetAsyncKeyState(VK_SHIFT))
+        {
+            m_sel2 = event.GetX();
+
+            if(m_sel2 < m_selStart)
+            {
+                m_sel1 = m_selStop;
+            }
+            else if(m_sel2 > m_selStop)
+            {
+                m_sel1 = m_selStart;
+            }
+        }
+        else
+        {
+            m_sel1 = event.GetX();
+        }
     }
 }
 
 void DetailDialog::OnPanel1LeftUp(wxMouseEvent& event)
 {
     m_selecting = false;
+
+    // Auto play if lifting the mouse in selection mode.
+
+    if(event.GetY() <= (waveDisplayHeight * .5))
+    {
+        PlayCurrentSelection();
+    }
 }
 
 void DetailDialog::OnPanel1MouseMove(wxMouseEvent& event)
@@ -528,5 +549,19 @@ void DetailDialog::OnPanel1MouseMove(wxMouseEvent& event)
 
 void DetailDialog::OnPanel1MouseLeave(wxMouseEvent& event)
 {
+    // It's better if selection stops when the user leaves the boundaries of the panel.
+
     m_selecting = false;
+
+    // In the panel we mimic the Pro Tools multi tool, but when we leave it, we should return to normal.
+
+    SetCursor(wxCURSOR_DEFAULT);
+
+    // Auto play.
+    // Auto play if lifting the mouse in selection mode.
+
+    if(event.GetY() <= (waveDisplayHeight * .5))
+    {
+        PlayCurrentSelection();
+    }
 }

@@ -23,7 +23,6 @@ class DetailDialog: public wxDialog
             wxWindow* parent,
             wxString filename,
             wxString description,
-            wxString storageDirectory,
             wxWindowID id=wxID_ANY,
             const wxPoint& pos=wxDefaultPosition
         );
@@ -73,8 +72,9 @@ class DetailDialog: public wxDialog
 		void OnPanel1MouseLeave(wxMouseEvent& event);
 		//*)
 
-		bool CreateWavFile(wxString& fileName, bool cueForDeletion = true);
+		bool CreateWavFile(wxString& fileName);
 		void LoadWavFile(wxString fileName);
+		void PlayCurrentSelection();
 
         wxString m_filename; /**< File we are currently looking at. */
         wxString m_storageDirectory; /**< Directory where files will be stored. */
@@ -99,8 +99,6 @@ class DetailDialog: public wxDialog
         int m_selStart; /**< Computed left border of selection. */
         int m_selStop; /**< Computed right border of selection. */
         bool m_selecting; /**< True if user is currently selecting. */
-
-        bool m_customDirectoryProvided; /**< If a user saves files into a custom dir, we don't delete the dragged files. */
 
         wxString m_filePrefix;/**< Description to tag on to filename we generate (easier for Pro Tools timeline) */
 

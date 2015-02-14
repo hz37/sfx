@@ -476,7 +476,7 @@ void sfxFrame::OnDetailButtonClick(wxCommandEvent& event)
 
     // Show dialog and not interested in modal result on purpose.
 
-    DetailDialog dlg(this, filename, description, m_saveFolder);
+    DetailDialog dlg(this, filename, description);
 
     dlg.ShowModal();
 }
