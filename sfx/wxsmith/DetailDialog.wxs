@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="DetailDialog">
+		<title>Detail</title>
+		<centered>1</centered>
+		<size>517,257</size>
+		<pos_arg>1</pos_arg>
+		<object class="wxStaticBox" name="ID_STATICBOX1" variable="StaticBox1" member="yes">
+			<label>Details</label>
+			<pos>8,8</pos>
+			<size>500,96</size>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT3" variable="StaticText3" member="yes">
+			<label>Channels:</label>
+			<pos>16,56</pos>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT4" variable="StaticText4" member="yes">
+			<label>Sample rate:</label>
+			<pos>16,80</pos>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
+			<label>Description:</label>
+			<pos>16,32</pos>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT5" variable="DescriptionStaticText" member="yes">
+			<label>-</label>
+			<pos>88,32</pos>
+		</object>
+		<object class="wxPanel" name="ID_PANEL1" variable="Panel1" member="yes">
+			<pos>8,112</pos>
+			<size>500,100</size>
+			<bg>#000000</bg>
+			<handler function="OnPanel1Paint" entry="EVT_PAINT" />
+			<handler function="OnPanel1EraseBackground" entry="EVT_ERASE_BACKGROUND" />
+			<handler function="OnPanel1LeftDown" entry="EVT_LEFT_DOWN" />
+			<handler function="OnPanel1LeftUp" entry="EVT_LEFT_UP" />
+			<handler function="OnPanel1MouseMove" entry="EVT_MOTION" />
+			<handler function="OnPanel1MouseLeave" entry="EVT_LEAVE_WINDOW" />
+		</object>
+		<object class="wxButton" name="ID_BUTTON1" variable="PlayButton" member="yes">
+			<label>Play</label>
+			<pos>8,224</pos>
+			<handler function="OnPlayButtonClick" entry="EVT_BUTTON" />
+		</object>
+		<object class="wxButton" name="ID_BUTTON2" variable="StopButton" member="yes">
+			<label>Stop</label>
+			<pos>96,224</pos>
+			<handler function="OnStopButtonClick" entry="EVT_BUTTON" />
+		</object>
+		<object class="wxButton" name="ID_BUTTON3" variable="ExitButton" member="yes">
+			<label>Exit</label>
+			<pos>432,224</pos>
+			<handler function="OnExitButtonClick" entry="EVT_BUTTON" />
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT7" variable="ChannelsStaticText" member="yes">
+			<label>-</label>
+			<pos>88,56</pos>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT8" variable="SamplerateStaticText" member="yes">
+			<label>-</label>
+			<pos>88,80</pos>
+		</object>
+	</object>
+</wxsmith>

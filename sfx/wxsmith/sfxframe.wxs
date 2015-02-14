@@ -80,12 +80,12 @@
 						<border>1</border>
 					</object>
 					<object class="sizeritem">
-						<object class="wxButton" name="ID_METADATABUTTON" variable="MetadataButton" member="yes">
-							<label>Meta</label>
+						<object class="wxButton" name="ID_DETAILBUTTON" variable="DetailButton" member="yes">
+							<label>Detail</label>
 							<size>35,12d</size>
 							<minsize>35,12d</minsize>
 							<maxsize>35,12d</maxsize>
-							<handler function="OnMetadataButtonClick" entry="EVT_BUTTON" />
+							<handler function="OnDetailButtonClick" entry="EVT_BUTTON" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 						<border>1</border>

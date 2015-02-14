@@ -18,12 +18,11 @@ public:
     void setAndSearch(const bool andSearch = true);
     wxString searchedDescriptionAt(const int index);
     wxString searchedFileNameAt(const int index);
-    wxString metaData(wxString filename);
+    // wxString metaData(wxString filename);
 
 private:
     wxString descriptionAt(const int index);
     wxString fileNameAt(const int index);
-    wxString includeTrailingBackslash(wxString folder);
 
     bool m_andSearch;
     bool m_dataError;

@@ -7,10 +7,7 @@
 #include <wx/filename.h>
 #include <wx/volume.h>
 
-//#include "C:/gitroot/taglib-1.9.1/taglib/tag.h"
-//#include "C:/gitroot/taglib-1.9.1/taglib/fileref.h"
-//#include "C:/gitroot/taglib-1.9.1/taglib/toolkit/tpropertymap.h"
-// #include "C:/gitroot/taglib-1.9.1/taglib/riff/wav/wavfile.h"
+#include "utility.h"
 
 model::model() :
     m_andSearch(true),
@@ -177,8 +174,8 @@ wxString model::fileNameAt(const int index)
 
 // Return metadata of this file using TagLib.
 
-wxString model::metaData(wxString filename)
-{
+//wxString model::metaData(wxString filename)
+//{
     /*
     wxString metaData;
 
@@ -217,8 +214,8 @@ wxString model::metaData(wxString filename)
     return metaData;
     */
 
-    return "Not implemented";
-}
+//    return "Not implemented";
+//}
 
 // Do case insensitive search.
 // Descriptions have already been forced into lowercase on reading the datafile!
@@ -335,23 +332,4 @@ wxString model::searchedFileNameAt(const int index)
 void model::setAndSearch(const bool andSearch)
 {
     m_andSearch = andSearch;
-}
-
-// Helper function to make sure paths end with a backslash.
-
-wxString model::includeTrailingBackslash(wxString folder)
-{
-    int len = folder.Length();
-
-    if(len == 0)
-    {
-        return _("");
-    }
-
-    if(folder[len - 1] == '\\')
-    {
-        return folder;
-    }
-
-    return folder + _("\\");
 }

@@ -50,12 +50,10 @@ class sfxFrame: public wxFrame
         void OnSaveToFolderButtonClick(wxCommandEvent& event);
         void OnResultsListCtrlBeginDrag(wxListEvent& event);
         void OnResultsListCtrlItemSelect(wxListEvent& event);
-        void OnMetadataButtonClick(wxCommandEvent& event);
+        void OnDetailButtonClick(wxCommandEvent& event);
         //*)
 
         void playSelectedSound();
-        wxString includeTrailingBackslash(wxString folder);
-        wxString validFileName(const wxString description);
 
         //(*Identifiers(sfxFrame)
         static const long ID_SEARCHTEXT;
@@ -64,7 +62,7 @@ class sfxFrame: public wxFrame
         static const long ID_ORRADIOBUTTON;
         static const long ID_PLAYBUTTON;
         static const long ID_STOPBUTTON;
-        static const long ID_METADATABUTTON;
+        static const long ID_DETAILBUTTON;
         static const long ID_TOPMOSTCHECKBOX;
         static const long ID_SAVEFOLDERBUTTON;
         static const long ID_SAVETOFOLDERBUTTON;
@@ -79,13 +77,13 @@ class sfxFrame: public wxFrame
         wxTextCtrl* SearchTextCtrl;
         wxRadioButton* OrRadioButton;
         wxButton* SaveToFolderButton;
-        wxButton* MetadataButton;
         wxCheckBox* TopmostCheckBox;
         wxButton* StopButton;
         wxButton* SearchButton;
         wxListCtrl* ResultsListCtrl;
         wxStatusBar* StatusBar1;
         wxDirDialog* DirDialog1;
+        wxButton* DetailButton;
         wxRadioButton* AndRadioButton;
         wxButton* SaveFolderButton;
         //*)

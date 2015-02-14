@@ -8,6 +8,7 @@
  **************************************************************/
 
 #include "sfxMain.h"
+
 #include <wx/msgdlg.h>
 #include <wx/dnd.h>
 #include <wx/filename.h>
@@ -21,7 +22,9 @@
 #include <wx/string.h>
 //*)
 
-#include "MetadataFrame.h"
+#include "DetailDialog.h"
+#include "utility.h"
+
 
 //helper functions
 enum wxbuildinfoformat {
@@ -56,7 +59,7 @@ const long sfxFrame::ID_ANDRADIOBUTTON = wxNewId();
 const long sfxFrame::ID_ORRADIOBUTTON = wxNewId();
 const long sfxFrame::ID_PLAYBUTTON = wxNewId();
 const long sfxFrame::ID_STOPBUTTON = wxNewId();
-const long sfxFrame::ID_METADATABUTTON = wxNewId();
+const long sfxFrame::ID_DETAILBUTTON = wxNewId();
 const long sfxFrame::ID_TOPMOSTCHECKBOX = wxNewId();
 const long sfxFrame::ID_SAVEFOLDERBUTTON = wxNewId();
 const long sfxFrame::ID_SAVETOFOLDERBUTTON = wxNewId();
@@ -113,10 +116,10 @@ sfxFrame::sfxFrame(wxWindow* parent,wxWindowID id)
     StopButton->SetMinSize(wxDLG_UNIT(this,wxSize(35,12)));
     StopButton->SetMaxSize(wxDLG_UNIT(this,wxSize(35,12)));
     BoxSizer2->Add(StopButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
-    MetadataButton = new wxButton(this, ID_METADATABUTTON, _("Meta"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(35,12)), 0, wxDefaultValidator, _T("ID_METADATABUTTON"));
-    MetadataButton->SetMinSize(wxDLG_UNIT(this,wxSize(35,12)));
-    MetadataButton->SetMaxSize(wxDLG_UNIT(this,wxSize(35,12)));
-    BoxSizer2->Add(MetadataButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
+    DetailButton = new wxButton(this, ID_DETAILBUTTON, _("Detail"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(35,12)), 0, wxDefaultValidator, _T("ID_DETAILBUTTON"));
+    DetailButton->SetMinSize(wxDLG_UNIT(this,wxSize(35,12)));
+    DetailButton->SetMaxSize(wxDLG_UNIT(this,wxSize(35,12)));
+    BoxSizer2->Add(DetailButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
     TopmostCheckBox = new wxCheckBox(this, ID_TOPMOSTCHECKBOX, _("Topmost"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(45,12)), 0, wxDefaultValidator, _T("ID_TOPMOSTCHECKBOX"));
     TopmostCheckBox->SetValue(true);
     TopmostCheckBox->SetMinSize(wxDLG_UNIT(this,wxSize(45,12)));
@@ -165,7 +168,7 @@ sfxFrame::sfxFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_ORRADIOBUTTON,wxEVT_COMMAND_RADIOBUTTON_SELECTED,(wxObjectEventFunction)&sfxFrame::OnOrRadioButtonSelect);
     Connect(ID_PLAYBUTTON,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&sfxFrame::OnPlayButtonClick);
     Connect(ID_STOPBUTTON,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&sfxFrame::OnStopButtonClick);
-    Connect(ID_METADATABUTTON,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&sfxFrame::OnMetadataButtonClick);
+    Connect(ID_DETAILBUTTON,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&sfxFrame::OnDetailButtonClick);
     Connect(ID_TOPMOSTCHECKBOX,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&sfxFrame::OnTopmostCheckBoxClick);
     Connect(ID_SAVEFOLDERBUTTON,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&sfxFrame::OnSaveFolderButtonClick);
     Connect(ID_SAVETOFOLDERBUTTON,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&sfxFrame::OnSaveToFolderButtonClick);
@@ -228,7 +231,7 @@ void sfxFrame::OnAbout(wxCommandEvent& event)
 {
     wxMessageBox
     (
-        _("Programming: Hens Zimmerman\nEmail: hz37@xs4all.nl\nVersion: January 30, 2015."),
+        _("Programming: Hens Zimmerman\nEmail: hz37@xs4all.nl\nVersion: Feberuary 14, 2015."),
         _("About...")
     );
 }
@@ -315,7 +318,7 @@ void sfxFrame::OnSaveFolderButtonClick(wxCommandEvent& event)
         return;
     }
 
-    if(DirDialog1->ShowModal())
+    if(DirDialog1->ShowModal() != wxID_CANCEL)
     {
         m_saveFolder = includeTrailingBackslash(DirDialog1->GetPath());
         StatusBar1->SetLabel(m_saveFolder);
@@ -444,39 +447,10 @@ void sfxFrame::playSelectedSound()
     m_sound.Play(soundFileName, wxSOUND_ASYNC);
 }
 
-// Helper function to make sure paths end with a backslash.
 
-wxString sfxFrame::includeTrailingBackslash(wxString folder)
-{
-    int len = folder.Length();
+// Launch new window with wav graphic and metadata.
 
-    if(len == 0)
-    {
-        return _("");
-    }
-
-    if(folder[len - 1] == '\\')
-    {
-        return folder;
-    }
-
-    return folder + _("\\");
-}
-
-// Turn description into a valid Windows filename.
-// We take a bit of a sharp turn, because we disallow everything but chars, numbers and spaces.
-// And use a max 128 char filename (MAX_PATH in Win32 is longer).
-
-wxString sfxFrame::validFileName(const wxString description)
-{
-    wxString returnValue = description;
-    wxRegEx regexp(_("[^A-Z0-9 ]"), wxRE_ICASE | wxRE_DEFAULT);
-    regexp.ReplaceAll(&returnValue, _(""));
-
-    return returnValue.Truncate(128);
-}
-
-void sfxFrame::OnMetadataButtonClick(wxCommandEvent& event)
+void sfxFrame::OnDetailButtonClick(wxCommandEvent& event)
 {
     // First find index of selected item (if any).
 
@@ -489,12 +463,20 @@ void sfxFrame::OnMetadataButtonClick(wxCommandEvent& event)
 
     if(index < 0)
     {
+        // Nothing selected; silently ignore this silly request.
         return;
     }
 
-    wxString soundFileName = m_model.searchedFileNameAt(index);
-    wxString text = m_model.metaData(soundFileName);
-    MetadataFrame* metaDataFrame = new MetadataFrame(this, text);
+    wxString filename = m_model.searchedFileNameAt(index);
+    wxString description = m_model.searchedDescriptionAt(index);
 
-    metaDataFrame->Show();
+    // No need to have this playing in the background while we enter the dialog.
+
+    m_sound.Stop();
+
+    // Show dialog and not interested in modal result on purpose.
+
+    DetailDialog dlg(this, filename, description, m_saveFolder);
+
+    dlg.ShowModal();
 }

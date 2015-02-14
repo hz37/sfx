@@ -27,23 +27,25 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-Wall" />
 			<Add option="-pipe" />
 			<Add option="-mthreads" />
 			<Add option="-D__GNUWIN32__" />
 			<Add option="-D__WXMSW__" />
 			<Add option="-DWXUSINGDLL" />
 			<Add option="-DwxUSE_UNICODE" />
-			<Add option="-Wall" />
 			<Add directory="C:/wxWidgets-3.0.0/include" />
+			<Add directory="C:/Program Files/Mega-Nerd/libsndfile/include" />
 		</Compiler>
 		<ResourceCompiler>
 			<Add directory="C:/wxWidgets-3.0.0/include" />
 		</ResourceCompiler>
 		<Linker>
 			<Add option="-mthreads" />
+			<Add library="C:\Program Files\Mega-Nerd\libsndfile\lib\libsndfile-1.lib" />
 		</Linker>
-		<Unit filename="MetadataFrame.cpp" />
-		<Unit filename="MetadataFrame.h" />
+		<Unit filename="DetailDialog.cpp" />
+		<Unit filename="DetailDialog.h" />
 		<Unit filename="Rotate3.ico" />
 		<Unit filename="model.cpp" />
 		<Unit filename="model.h" />
@@ -54,7 +56,9 @@
 		<Unit filename="sfxApp.h" />
 		<Unit filename="sfxMain.cpp" />
 		<Unit filename="sfxMain.h" />
-		<Unit filename="wxsmith/MetadataFrame.wxs" />
+		<Unit filename="utility.cpp" />
+		<Unit filename="utility.h" />
+		<Unit filename="wxsmith/DetailDialog.wxs" />
 		<Unit filename="wxsmith/sfxframe.wxs" />
 		<Extensions>
 			<code_completion />
@@ -64,7 +68,7 @@
 				<gui name="wxWidgets" src="sfxApp.cpp" main="sfxFrame" init_handlers="necessary" language="CPP" />
 				<resources>
 					<wxFrame wxs="wxsmith/sfxframe.wxs" src="sfxMain.cpp" hdr="sfxMain.h" fwddecl="0" i18n="1" name="sfxFrame" language="CPP" />
-					<wxFrame wxs="wxsmith/MetadataFrame.wxs" src="MetadataFrame.cpp" hdr="MetadataFrame.h" fwddecl="0" i18n="1" name="MetadataFrame" language="CPP" />
+					<wxDialog wxs="wxsmith/DetailDialog.wxs" src="DetailDialog.cpp" hdr="DetailDialog.h" fwddecl="0" i18n="1" name="DetailDialog" language="CPP" />
 				</resources>
 			</wxsmith>
 			<DoxyBlocks>
