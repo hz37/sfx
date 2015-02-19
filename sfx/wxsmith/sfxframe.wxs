@@ -19,7 +19,7 @@
 							<handler function="OnSearchTextCtrlTextEnter" entry="EVT_TEXT_ENTER" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>1</border>
+						<border>2</border>
 						<option>1</option>
 					</object>
 					<object class="sizeritem">
@@ -31,7 +31,7 @@
 							<handler function="OnSearchButtonClick" entry="EVT_BUTTON" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>1</border>
+						<border>2</border>
 					</object>
 					<object class="sizeritem">
 						<object class="wxRadioButton" name="ID_ANDRADIOBUTTON" variable="AndRadioButton" member="yes">
@@ -44,7 +44,7 @@
 							<handler function="OnAndRadioButtonSelect" entry="EVT_RADIOBUTTON" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>1</border>
+						<border>2</border>
 					</object>
 					<object class="sizeritem">
 						<object class="wxRadioButton" name="ID_ORRADIOBUTTON" variable="OrRadioButton" member="yes">
@@ -55,7 +55,7 @@
 							<handler function="OnOrRadioButtonSelect" entry="EVT_RADIOBUTTON" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>1</border>
+						<border>2</border>
 					</object>
 					<object class="sizeritem">
 						<object class="wxButton" name="ID_PLAYBUTTON" variable="PlayButton" member="yes">
@@ -66,7 +66,7 @@
 							<handler function="OnPlayButtonClick" entry="EVT_BUTTON" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>1</border>
+						<border>2</border>
 					</object>
 					<object class="sizeritem">
 						<object class="wxButton" name="ID_STOPBUTTON" variable="StopButton" member="yes">
@@ -77,7 +77,7 @@
 							<handler function="OnStopButtonClick" entry="EVT_BUTTON" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>1</border>
+						<border>2</border>
 					</object>
 					<object class="sizeritem">
 						<object class="wxButton" name="ID_DETAILBUTTON" variable="DetailButton" member="yes">
@@ -88,7 +88,7 @@
 							<handler function="OnDetailButtonClick" entry="EVT_BUTTON" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>1</border>
+						<border>2</border>
 					</object>
 					<object class="sizeritem">
 						<object class="wxCheckBox" name="ID_TOPMOSTCHECKBOX" variable="TopmostCheckBox" member="yes">
@@ -100,7 +100,7 @@
 							<handler function="OnTopmostCheckBoxClick" entry="EVT_CHECKBOX" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>1</border>
+						<border>2</border>
 					</object>
 					<object class="sizeritem">
 						<object class="wxButton" name="ID_SAVEFOLDERBUTTON" variable="SaveFolderButton" member="yes">
@@ -111,7 +111,7 @@
 							<handler function="OnSaveFolderButtonClick" entry="EVT_BUTTON" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>1</border>
+						<border>2</border>
 					</object>
 					<object class="sizeritem">
 						<object class="wxButton" name="ID_SAVETOFOLDERBUTTON" variable="SaveToFolderButton" member="yes">
@@ -123,7 +123,7 @@
 							<handler function="OnSaveToFolderButtonClick" entry="EVT_BUTTON" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>1</border>
+						<border>2</border>
 					</object>
 				</object>
 				<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>

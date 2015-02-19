@@ -58,6 +58,7 @@
 		<Unit filename="sfxMain.h" />
 		<Unit filename="utility.cpp" />
 		<Unit filename="utility.h" />
+		<Unit filename="wxsmith/AdminDialog.wxs" />
 		<Unit filename="wxsmith/DetailDialog.wxs" />
 		<Unit filename="wxsmith/sfxframe.wxs" />
 		<Extensions>
@@ -69,6 +70,7 @@
 				<resources>
 					<wxFrame wxs="wxsmith/sfxframe.wxs" src="sfxMain.cpp" hdr="sfxMain.h" fwddecl="0" i18n="1" name="sfxFrame" language="CPP" />
 					<wxDialog wxs="wxsmith/DetailDialog.wxs" src="DetailDialog.cpp" hdr="DetailDialog.h" fwddecl="0" i18n="1" name="DetailDialog" language="CPP" />
+					<wxDialog wxs="wxsmith/AdminDialog.wxs" src="AdminDialog.cpp" hdr="AdminDialog.h" fwddecl="0" i18n="1" name="AdminDialog" language="CPP" />
 				</resources>
 			</wxsmith>
 			<DoxyBlocks>

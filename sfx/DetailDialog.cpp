@@ -143,7 +143,9 @@ DetailDialog::~DetailDialog()
 
     for(std::vector <wxString>::iterator idx = m_tempFiles.begin(); idx != m_tempFiles.end(); ++idx)
     {
-        wxRemoveFile(*idx);
+        // Using win32 api function instead, because that one fails silently (while wxRemoveFile pops up an error msg).
+        ::DeleteFile(idx->c_str());
+ //       wxRemoveFile(*idx);
     }
 }
 

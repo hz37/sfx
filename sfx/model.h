@@ -12,6 +12,7 @@ public:
     /** Default destructor */
     ~model();
 
+    wxString dataFileName();
     bool hasDataError(wxString& description);
     int totalCount();
     int search(wxString searchString);

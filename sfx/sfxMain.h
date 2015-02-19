@@ -51,7 +51,7 @@ class sfxFrame: public wxFrame
         void OnResultsListCtrlBeginDrag(wxListEvent& event);
         void OnResultsListCtrlItemSelect(wxListEvent& event);
         void OnDetailButtonClick(wxCommandEvent& event);
-        //*)
+         //*)
 
         void playSelectedSound();
 

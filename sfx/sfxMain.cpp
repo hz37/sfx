@@ -94,46 +94,46 @@ sfxFrame::sfxFrame(wxWindow* parent,wxWindowID id)
     SearchTextCtrl = new wxTextCtrl(this, ID_SEARCHTEXT, wxEmptyString, wxDefaultPosition, wxSize(303,21), wxTE_PROCESS_ENTER, wxDefaultValidator, _T("ID_SEARCHTEXT"));
     SearchTextCtrl->SetMinSize(wxDLG_UNIT(this,wxSize(200,12)));
     SearchTextCtrl->SetMaxSize(wxDLG_UNIT(this,wxSize(1000,12)));
-    BoxSizer2->Add(SearchTextCtrl, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
+    BoxSizer2->Add(SearchTextCtrl, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
     SearchButton = new wxButton(this, ID_SEARCH, _("Search"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(35,12)), 0, wxDefaultValidator, _T("ID_SEARCH"));
     SearchButton->SetMinSize(wxDLG_UNIT(this,wxSize(35,12)));
     SearchButton->SetMaxSize(wxDLG_UNIT(this,wxSize(35,12)));
-    BoxSizer2->Add(SearchButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
+    BoxSizer2->Add(SearchButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
     AndRadioButton = new wxRadioButton(this, ID_ANDRADIOBUTTON, _("AND"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(30,12)), wxRB_GROUP, wxDefaultValidator, _T("ID_ANDRADIOBUTTON"));
     AndRadioButton->SetValue(true);
     AndRadioButton->SetMinSize(wxDLG_UNIT(this,wxSize(30,12)));
     AndRadioButton->SetMaxSize(wxDLG_UNIT(this,wxSize(30,12)));
-    BoxSizer2->Add(AndRadioButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
+    BoxSizer2->Add(AndRadioButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
     OrRadioButton = new wxRadioButton(this, ID_ORRADIOBUTTON, _("OR"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(30,12)), 0, wxDefaultValidator, _T("ID_ORRADIOBUTTON"));
     OrRadioButton->SetMinSize(wxDLG_UNIT(this,wxSize(30,12)));
     OrRadioButton->SetMaxSize(wxDLG_UNIT(this,wxSize(30,12)));
-    BoxSizer2->Add(OrRadioButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
+    BoxSizer2->Add(OrRadioButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
     PlayButton = new wxButton(this, ID_PLAYBUTTON, _("Play"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(35,12)), 0, wxDefaultValidator, _T("ID_PLAYBUTTON"));
     PlayButton->SetMinSize(wxDLG_UNIT(this,wxSize(35,12)));
     PlayButton->SetMaxSize(wxDLG_UNIT(this,wxSize(35,12)));
-    BoxSizer2->Add(PlayButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
+    BoxSizer2->Add(PlayButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
     StopButton = new wxButton(this, ID_STOPBUTTON, _("Stop"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(35,12)), 0, wxDefaultValidator, _T("ID_STOPBUTTON"));
     StopButton->SetMinSize(wxDLG_UNIT(this,wxSize(35,12)));
     StopButton->SetMaxSize(wxDLG_UNIT(this,wxSize(35,12)));
-    BoxSizer2->Add(StopButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
+    BoxSizer2->Add(StopButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
     DetailButton = new wxButton(this, ID_DETAILBUTTON, _("Detail"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(35,12)), 0, wxDefaultValidator, _T("ID_DETAILBUTTON"));
     DetailButton->SetMinSize(wxDLG_UNIT(this,wxSize(35,12)));
     DetailButton->SetMaxSize(wxDLG_UNIT(this,wxSize(35,12)));
-    BoxSizer2->Add(DetailButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
+    BoxSizer2->Add(DetailButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
     TopmostCheckBox = new wxCheckBox(this, ID_TOPMOSTCHECKBOX, _("Topmost"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(45,12)), 0, wxDefaultValidator, _T("ID_TOPMOSTCHECKBOX"));
     TopmostCheckBox->SetValue(true);
     TopmostCheckBox->SetMinSize(wxDLG_UNIT(this,wxSize(45,12)));
     TopmostCheckBox->SetMaxSize(wxDLG_UNIT(this,wxSize(45,12)));
-    BoxSizer2->Add(TopmostCheckBox, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
+    BoxSizer2->Add(TopmostCheckBox, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
     SaveFolderButton = new wxButton(this, ID_SAVEFOLDERBUTTON, _("..."), wxDefaultPosition, wxDLG_UNIT(this,wxSize(20,12)), 0, wxDefaultValidator, _T("ID_SAVEFOLDERBUTTON"));
     SaveFolderButton->SetMinSize(wxDLG_UNIT(this,wxSize(20,12)));
     SaveFolderButton->SetMaxSize(wxDLG_UNIT(this,wxSize(20,12)));
-    BoxSizer2->Add(SaveFolderButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
+    BoxSizer2->Add(SaveFolderButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
     SaveToFolderButton = new wxButton(this, ID_SAVETOFOLDERBUTTON, _("Save to folder"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(60,12)), 0, wxDefaultValidator, _T("ID_SAVETOFOLDERBUTTON"));
     SaveToFolderButton->SetMinSize(wxDLG_UNIT(this,wxSize(60,12)));
     SaveToFolderButton->SetMaxSize(wxDLG_UNIT(this,wxSize(60,12)));
     SaveToFolderButton->Disable();
-    BoxSizer2->Add(SaveToFolderButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
+    BoxSizer2->Add(SaveToFolderButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
     BoxSizer1->Add(BoxSizer2, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 0);
     BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
     ResultsListCtrl = new wxListCtrl(this, ID_RESULTSLISTCTRL, wxDefaultPosition, wxSize(1183,319), wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxVSCROLL|wxHSCROLL, wxDefaultValidator, _T("ID_RESULTSLISTCTRL"));
@@ -231,7 +231,7 @@ void sfxFrame::OnAbout(wxCommandEvent& event)
 {
     wxMessageBox
     (
-        _("Programming: Hens Zimmerman\nEmail: hz37@xs4all.nl\nVersion: Feberuary 14, 2015."),
+        _("Programming: Hens Zimmerman\nEmail: hz37@xs4all.nl\nVersion: February 16, 2015."),
         _("About...")
     );
 }
@@ -480,3 +480,4 @@ void sfxFrame::OnDetailButtonClick(wxCommandEvent& event)
 
     dlg.ShowModal();
 }
+

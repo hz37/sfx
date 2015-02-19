@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="AdminDialog">
+		<title>Admin</title>
+		<size>562,188</size>
+		<pos_arg>1</pos_arg>
+		<size_arg>1</size_arg>
+		<object class="wxButton" name="ID_CLEANDATAFILEBUTTON" variable="CleanDataFileButton" member="yes">
+			<label>Clean data file</label>
+			<pos>8,8</pos>
+			<handler function="OnCleanDataFileButtonClick" entry="EVT_BUTTON" />
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="LogTextCtrl" member="yes">
+			<pos>8,48</pos>
+			<size>360,120</size>
+			<style>wxTE_MULTILINE</style>
+		</object>
+	</object>
+</wxsmith>

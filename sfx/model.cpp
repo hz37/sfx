@@ -9,6 +9,9 @@
 
 #include "utility.h"
 
+const wxString c_configFile = "config.txt";
+const wxString c_dataFile = "data.txt";
+
 model::model() :
     m_andSearch(true),
     m_dataError(false),
@@ -20,7 +23,7 @@ model::model() :
     wxStandardPaths sp = wxStandardPaths::Get();
 
     wxString exePath = includeTrailingBackslash(wxPathOnly(sp.GetExecutablePath()));
-    wxString configFilename = exePath + _("config.txt");
+    wxString configFilename = exePath + c_configFile;
 
     if(wxFileExists(configFilename))
     {
@@ -40,7 +43,7 @@ model::model() :
     // Now the actual data.
     // Update 01-06-2014: file is now read from sfx root.
 
-    wxString dataFilename = m_sfxRootDirectory + _("data.txt");
+    wxString dataFilename = m_sfxRootDirectory + c_dataFile;
 
     // Drive may be mounted but (temporarily) on a different drive designator.
     // Let sfx enumerate all available drives to see if this is the case
@@ -135,6 +138,11 @@ model::model() :
 model::~model()
 {
     //dtor
+}
+
+wxString model::dataFileName()
+{
+    return m_sfxRootDirectory + c_dataFile;
 }
 
 bool model::hasDataError(wxString& description)
