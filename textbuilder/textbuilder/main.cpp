@@ -12,6 +12,7 @@ config.txt is written in the current directory.
 Hens Zimmerman, Code::Blocks 13.12.
 henszimmerman@gmail.com
 Jan. 30, 2015.
+Update Feb. 20, 2015: Reads and corrects existing data file. Does not overwrite existing entries.
 
 */
 
@@ -20,6 +21,7 @@ Jan. 30, 2015.
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <sys/stat.h>
 #include <vector>
 
 // This console program is platform specific for Windows.
@@ -34,16 +36,48 @@ struct TSFXRecord
     std::string label;
     std::string filename;
     friend bool operator < (const TSFXRecord& rec1, const TSFXRecord& rec2);
+    friend bool operator == (const TSFXRecord& rec1, const TSFXRecord& rec2);
 };
+
+
+bool operator < (const TSFXRecord& rec1, const TSFXRecord& rec2);
+bool operator == (const TSFXRecord& rec1, const TSFXRecord& rec2);
+bool file_exists(const std::string filename);
+size_t find_file_ext_idx(const char* fileName);
+std::string get_file_ext(const char* fileName);
+std::string include_trailing_backslash(const std::string directory);
+bool is_directory(const char* directory);
+std::string filename_to_label(const std::string filename);
+void scan(const std::string sfx_directory, const std::string data_filename, std::vector <TSFXRecord>& out);
+void tree(const std::string directory, std::vector <TSFXRecord>& out);
 
 
 // Non-class (friend) function, needed by STL sort() algorithm.
 
 bool operator < (const TSFXRecord& rec1, const TSFXRecord& rec2)
 {
-  return rec1.label < rec2.label;
+    return rec1.label < rec2.label;
 }
 
+
+// Non-class (friend) function, needed by STL find() algorithm.
+// In this case (woohee!), equality means the records point to the same existing file.
+// So they can (and will often) have different labels.
+
+bool operator == (const TSFXRecord& rec1, const TSFXRecord& rec2)
+{
+    // Do a case insensitive compare.
+
+    return stricmp(rec1.filename.c_str(), rec2.filename.c_str()) == 0;
+}
+
+// Return true if fileName exists.
+
+bool file_exists(const std::string filename)
+{
+    struct stat buffer;
+    return (stat (filename.c_str(), &buffer) == 0);
+}
 
 // Helper function to extract a file extension.
 
@@ -143,6 +177,57 @@ std::string filename_to_label(const std::string filename)
 }
 
 
+// Read data filename into out and remove referenced files that do not exist.
+
+void scan(const std::string sfx_directory, const std::string data_filename, std::vector <TSFXRecord>& out)
+{
+    std::ifstream input_file(data_filename.c_str());
+
+    std::string line;
+
+    int line_counter = 0;
+
+    std::string description;
+
+    while (std::getline(input_file, line))
+    {
+        if(line_counter == 0)
+        {
+            // First line can be ignored.
+            ++line_counter;
+            continue;
+        }
+        else if(line_counter % 2)
+        {
+            // Uneven lines are descriptions.
+            description = line;
+        }
+        else
+        {
+            // Even lines are filenames.
+            // Build the proper file name (path + name).
+
+            std::string full_path = sfx_directory + line;
+
+            if(file_exists(full_path))
+            {
+                TSFXRecord sfx_record;
+                sfx_record.filename = full_path;
+                sfx_record.label = description;
+                out.push_back(sfx_record);
+            }
+            else
+            {
+                // Report a missing file.
+                std::cout << "Removing missing [" << full_path << "] from data file" << std::endl;
+            }
+        }
+
+        ++line_counter;
+    }
+}
+
+
 // Recursive function to scan directory for .wav files.
 // Found files are stored in out, together with their label.
 
@@ -178,10 +263,17 @@ void tree(const std::string directory, std::vector <TSFXRecord>& out)
 
             if(get_file_ext(short_name.c_str()) == "wav")
             {
+                // Is it already in the vector?
+
                 TSFXRecord sfx_record;
                 sfx_record.filename = long_name;
-                sfx_record.label = filename_to_label(short_name);
-                out.push_back(sfx_record);
+
+                if(std::find(out.begin(), out.end(), sfx_record) == out.end())
+                {
+                    std::cout << "Adding " << long_name << std::endl;
+                    sfx_record.label = filename_to_label(short_name);
+                    out.push_back(sfx_record);
+                }
             }
         }
 
@@ -209,8 +301,18 @@ int main(int argc, char* argv[])
     }
 
     std::string sfx_directory = include_trailing_backslash(argv[1]);
+    std::string data_filename = sfx_directory + "data.txt";
+
+    // If there is already a data file, load it and remove missing entries.
 
     std::vector <TSFXRecord> sfx_records;
+
+    if(file_exists(data_filename))
+    {
+        std::cout << "Reading and checking existing data file" << std::endl;
+
+        scan(sfx_directory, data_filename, sfx_records);
+    }
 
     std::cout << "Scanning " << sfx_directory << std::endl;
 
@@ -222,7 +324,7 @@ int main(int argc, char* argv[])
 
     std::cout << "Writing data.txt in " << sfx_directory << std::endl;
 
-    std::ofstream data_file((sfx_directory + "data.txt").c_str());
+    std::ofstream data_file(data_filename.c_str());
 
     // Print first line to file with some info.
 
