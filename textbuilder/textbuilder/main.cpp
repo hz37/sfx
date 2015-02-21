@@ -13,6 +13,7 @@ Hens Zimmerman, Code::Blocks 13.12.
 henszimmerman@gmail.com
 Jan. 30, 2015.
 Update Feb. 20, 2015: Reads and corrects existing data file. Does not overwrite existing entries.
+Update feb. 21, 2015. Backs up old data.txt before overwriting.
 
 */
 
@@ -307,7 +308,9 @@ int main(int argc, char* argv[])
 
     std::vector <TSFXRecord> sfx_records;
 
-    if(file_exists(data_filename))
+    bool has_old_data_file = file_exists(data_filename);
+
+    if(has_old_data_file)
     {
         std::cout << "Reading and checking existing data file" << std::endl;
 
@@ -319,6 +322,17 @@ int main(int argc, char* argv[])
     tree(sfx_directory, sfx_records);
 
     std::sort(sfx_records.begin(), sfx_records.end());
+
+    if(has_old_data_file)
+    {
+        // Back up old data file.
+
+        std::cout << "Backing up old data.txt" << std::endl;
+
+        std::string backup_filename = sfx_directory + "data_backup.txt";
+
+        CopyFile(data_filename.c_str(), backup_filename.c_str(), false /* overwrite */);
+    }
 
     // Write datafile.
 
