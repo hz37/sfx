@@ -14,14 +14,46 @@
 #include <wx/image.h>
 //*)
 
+#include <wx/dir.h>
+#include <wx/filefn.h>
+#include <wx/stdpaths.h>
+
+#include "utility.h"
+
 IMPLEMENT_APP(sfxApp);
 
-//! \brief OnExit() virtual function override to clean up mutex.
+void sfxApp::DeleteTempFiles()
+{
+    // Delete temp files we created.
+
+    wxString storageDirectory = wxStandardPaths::Get().GetTempDir();
+
+    wxArrayString tempFiles;
+
+    wxDir::GetAllFiles(storageDirectory, &tempFiles, wxEmptyString, wxDIR_FILES);
+
+    size_t tempFileCount = tempFiles.GetCount();
+
+    for(size_t idx = 0; idx < tempFileCount; ++idx)
+    {
+        wxString file = tempFiles[idx];
+        if(file.Contains(c_tempPrefix))
+        {
+            wxRemoveFile(file);
+        }
+    }
+}
+
+//! \brief OnExit() virtual function override.
 //!
 //! \return Returns 0 at all times.
 
 int sfxApp::OnExit()
 {
+    DeleteTempFiles();
+
+    // Clean up mutex.
+
     delete m_checker;
 
     return 0;

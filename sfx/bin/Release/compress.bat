@@ -1,1 +1,1 @@
-upx -9 -v sfx.exe
+upx.exe -9 -v sfx.exe

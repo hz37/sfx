@@ -12,7 +12,7 @@
 #include <wx/bitmap.h>
 #include <wx/sound.h>
 #include <memory>
-#include <vector>
+//#include <vector>
 
 class DetailDialog: public wxDialog
 {
@@ -79,8 +79,6 @@ class DetailDialog: public wxDialog
         wxString m_filename; /**< File we are currently looking at. */
         wxString m_storageDirectory; /**< Directory where files will be stored. */
 
-        int m_tempWavCounter; /**< For every time a user Plays a sound, a new file is created with this counter in its name. */
-
         wxBitmap* m_drawBuffer; /**< Drawing buffer for waveform view. */
         wxBitmap* m_invertedBuffer; /**< Auto generated inverted version of m_drawBuffer. */
 
@@ -102,7 +100,7 @@ class DetailDialog: public wxDialog
 
         wxString m_filePrefix;/**< Description to tag on to filename we generate (easier for Pro Tools timeline) */
 
-        std::vector <wxString> m_tempFiles; /**< Store all temp files to clean up on exit. */
+//        std::vector <wxString> m_tempFiles; /**< Store all temp files to clean up on exit. */
 
 		DECLARE_EVENT_TABLE()
 };

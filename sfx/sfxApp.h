@@ -19,7 +19,10 @@
 class sfxApp : public wxApp
 {
 private:
+    void DeleteTempFiles();
+
     wxSingleInstanceChecker* m_checker; /** Guarantee to run only one instance. */
+
 public:
     virtual bool OnInit();
     virtual int OnExit();

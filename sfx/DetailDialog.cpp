@@ -54,7 +54,7 @@ DetailDialog::DetailDialog
     const wxPoint& pos
 ) :
     m_filename(filename),
-    m_tempWavCounter(0),
+//    m_tempWavCounter(0),
     m_channels(0),
     m_frameCount(0),
     m_sampleRate(0),
@@ -141,16 +141,20 @@ DetailDialog::~DetailDialog()
 
     // Delete all temp files.
 
+/*
     for(std::vector <wxString>::iterator idx = m_tempFiles.begin(); idx != m_tempFiles.end(); ++idx)
     {
         // Using win32 api function instead, because that one fails silently (while wxRemoveFile pops up an error msg).
         ::DeleteFile(idx->c_str());
  //       wxRemoveFile(*idx);
     }
+    */
 }
 
 bool DetailDialog::CreateWavFile(wxString& fileName)
 {
+    static int tempWavCounter = 0; /**< For every time a user Plays a sound, a new file is created with this counter in its name. */
+
     if(!m_waveData.get() || (m_selStart >= m_selStop))
     {
         // Nothing to do.
@@ -160,8 +164,9 @@ bool DetailDialog::CreateWavFile(wxString& fileName)
     // Build a temp file name for this wav.
 
     fileName << m_storageDirectory
+             << c_tempPrefix
              << m_filePrefix
-             << m_tempWavCounter++
+             << tempWavCounter++
              << ".wav";
 
     SF_INFO sfInfo;
@@ -203,7 +208,7 @@ bool DetailDialog::CreateWavFile(wxString& fileName)
 
     // File is created. Store in vector so we can clean up afterwards.
 
-    m_tempFiles.push_back(fileName);
+//    m_tempFiles.push_back(fileName);
 
     // Write current selection to this file.
     // The fixed pixel wav display makes it so that the selection granularity

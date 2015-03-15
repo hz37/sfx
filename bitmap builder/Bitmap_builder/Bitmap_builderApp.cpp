@@ -16,7 +16,6 @@
 #endif //__BORLANDC__
 
 #include "Bitmap_builderApp.h"
-#include "Bitmap_builderMain.h"
 
 #include <wx/bitmap.h>
 #include <wx/dcbuffer.h>

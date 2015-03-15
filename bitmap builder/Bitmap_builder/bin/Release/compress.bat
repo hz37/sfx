@@ -1,0 +1,1 @@
+upx.exe -9 -v Bitmap_builder.exe
