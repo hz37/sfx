@@ -22,7 +22,7 @@ model::model() :
 
     wxStandardPaths sp = wxStandardPaths::Get();
 
-    wxString exePath = includeTrailingBackslash(wxPathOnly(sp.GetExecutablePath()));
+    wxString exePath = Utility::includeTrailingBackslash(wxPathOnly(sp.GetExecutablePath()));
     wxString configFilename = exePath + c_configFile;
 
     if(wxFileExists(configFilename))

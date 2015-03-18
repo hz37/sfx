@@ -1,3 +1,14 @@
+/***************************************************************
+ * Name:      DetailDialog.h
+ * Purpose:   Show details of a sound effect in a modal dialog.
+ * Author:    Hens Zimmerman (henszimmerman@gmail.com)
+ * Created:   2014 - 2015
+ * Copyright: Hens Zimmerman
+ * License:   The MIT License (MIT)
+ **************************************************************/
+
+//---------------------------------------------------------------------------
+
 #ifndef DETAILDIALOG_H
 #define DETAILDIALOG_H
 

@@ -1,3 +1,14 @@
+/***************************************************************
+ * Name:      DetailDialog.cpp
+ * Purpose:   Show details of a sound effect in a modal dialog.
+ * Author:    Hens Zimmerman (henszimmerman@gmail.com)
+ * Created:   2014 - 2015
+ * Copyright: Hens Zimmerman
+ * License:   The MIT License (MIT)
+ **************************************************************/
+
+//---------------------------------------------------------------------------
+
 #include "DetailDialog.h"
 
 //(*InternalHeaders(DetailDialog)
@@ -16,6 +27,10 @@
 #include <sndfile.h>
 #include "utility.h"
 
+//---------------------------------------------------------------------------
+
+/** Constants. */
+
 //(*IdInit(DetailDialog)
 const long DetailDialog::ID_STATICBOX1 = wxNewId();
 const long DetailDialog::ID_STATICTEXT3 = wxNewId();
@@ -30,20 +45,37 @@ const long DetailDialog::ID_STATICTEXT7 = wxNewId();
 const long DetailDialog::ID_STATICTEXT8 = wxNewId();
 //*)
 
-// These are the fixed dimensions of the waveform display.
+/** These are the fixed dimensions of the waveform display. */
 
-const int waveDisplayWidth = 500;
-const int waveDisplayHeight = 100;
+const int c_waveDisplayWidth = 500;
+const int c_waveDisplayHeight = 100;
 
-// These are the pixel bounds of the selection.
+/** These are the pixel bounds of the selection. */
 
 const int c_minSel = 0;
-const int c_maxSel = waveDisplayWidth - 1;
+const int c_maxSel = c_waveDisplayWidth - 1;
+
+//---------------------------------------------------------------------------
+
+/** Machine generated event table. */
 
 BEGIN_EVENT_TABLE(DetailDialog,wxDialog)
 	//(*EventTable(DetailDialog)
 	//*)
 END_EVENT_TABLE()
+
+//---------------------------------------------------------------------------
+
+/** \brief Constructor.
+ *
+ * \param parent Parent window (SFX main window).
+ * \param filename Full path to filename to load.
+ * \param description Description of this sound effect as loaded from datafile.
+ * \param id Machine genereated window ID; gets value as def arg.
+ * \param pos Machine generated position; gets value as def arg.
+ *
+ */
+
 
 DetailDialog::DetailDialog
 (
@@ -54,7 +86,6 @@ DetailDialog::DetailDialog
     const wxPoint& pos
 ) :
     m_filename(filename),
-//    m_tempWavCounter(0),
     m_channels(0),
     m_frameCount(0),
     m_sampleRate(0),
@@ -65,10 +96,10 @@ DetailDialog::DetailDialog
     m_selStop(c_maxSel),
     m_selecting(false)
 {
-    // Create a buffer in which we will draw the waveform.
+    /** Create buffers in which we will draw the waveform and its inverse. */
 
-    m_drawBuffer = new wxBitmap(waveDisplayWidth, waveDisplayHeight, -1);
-    m_invertedBuffer = new wxBitmap(waveDisplayWidth, waveDisplayWidth, -1);
+    m_drawBuffer = new wxBitmap(c_waveDisplayWidth, c_waveDisplayHeight, -1);
+    m_invertedBuffer = new wxBitmap(c_waveDisplayWidth, c_waveDisplayWidth, -1);
 
 	//(*Initialize(DetailDialog)
 	Create(parent, id, _("Detail"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
@@ -99,19 +130,19 @@ DetailDialog::DetailDialog
 	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&DetailDialog::OnExitButtonClick);
 	//*)
 
-	// Show some basic information we got from the caller/parent.
+	/** Show description of this sound effect. */
 
 	DescriptionStaticText->SetLabel(description);
 
-	// Set up a path for the temp files.
+	/** Set up a path for the temp files. */
 
-    m_storageDirectory = includeTrailingBackslash(wxStandardPaths::Get().GetTempDir());
+    m_storageDirectory = Utility::includeTrailingBackslash(wxStandardPaths::Get().GetTempDir());
 
-    // Load the WAV file that was passed to this dialog.
+    /** Load the WAV file that was passed to this dialog. */
 
     LoadWavFile(m_filename);
 
-    // Show info we read from the WAV file.
+    /** Show info we read from the WAV file. */
 
     wxString channels;
     channels << m_channels;
@@ -121,11 +152,12 @@ DetailDialog::DetailDialog
     samplerate << m_sampleRate << " Hz";
     SamplerateStaticText->SetLabel(samplerate);
 
-    // Remember description to use as a prefix for the WAV filename we generate.
-    // Requested by Hans Brouwer feb 2015 to make it easier to see in the Pro Tools time line what's what.
+    /** Remember description to use as a prefix for the WAV filename we generate. */
 
-    m_filePrefix = validFileName(description);
+    m_filePrefix = Utility::validFileName(description);
 }
+
+//---------------------------------------------------------------------------
 
 DetailDialog::~DetailDialog()
 {
@@ -134,34 +166,27 @@ DetailDialog::~DetailDialog()
 	//(*Destroy(DetailDialog)
 	//*)
 
-    // Delete background buffers.
+    /** Delete background buffers. */
 
     delete m_drawBuffer;
     delete m_invertedBuffer;
 
-    // Delete all temp files.
-
-/*
-    for(std::vector <wxString>::iterator idx = m_tempFiles.begin(); idx != m_tempFiles.end(); ++idx)
-    {
-        // Using win32 api function instead, because that one fails silently (while wxRemoveFile pops up an error msg).
-        ::DeleteFile(idx->c_str());
- //       wxRemoveFile(*idx);
-    }
-    */
 }
+
+//---------------------------------------------------------------------------
 
 bool DetailDialog::CreateWavFile(wxString& fileName)
 {
-    static int tempWavCounter = 0; /**< For every time a user Plays a sound, a new file is created with this counter in its name. */
+    static int tempWavCounter = 0; /** For every time a user Plays a sound, a new file is created with this counter in its name. */
 
     if(!m_waveData.get() || (m_selStart >= m_selStop))
     {
-        // Nothing to do.
+        /** Nothing to do. */
+
         return false;
     }
 
-    // Build a temp file name for this wav.
+    /** Build a temp file name for this wav. */
 
     fileName << m_storageDirectory
              << c_tempPrefix
@@ -206,15 +231,7 @@ bool DetailDialog::CreateWavFile(wxString& fileName)
         return false;
     }
 
-    // File is created. Store in vector so we can clean up afterwards.
-
-//    m_tempFiles.push_back(fileName);
-
-    // Write current selection to this file.
-    // The fixed pixel wav display makes it so that the selection granularity
-    // is dictated by the length of the file.
-
-    int delta = m_frameCount / waveDisplayWidth;
+    int delta = m_frameCount / c_waveDisplayWidth;
 
     int start = m_selStart * delta;
     int frames = (m_selStop - m_selStart) * delta;
@@ -228,6 +245,8 @@ bool DetailDialog::CreateWavFile(wxString& fileName)
     return true;
 }
 
+//---------------------------------------------------------------------------
+
 void DetailDialog::LoadWavFile(wxString fileName)
 {
     SF_INFO sf_info;
@@ -238,7 +257,7 @@ void DetailDialog::LoadWavFile(wxString fileName)
 
     if(snd_file)
     {
-        // Create buffer.
+        /** Create buffer. */
 
         m_frameCount = sf_info.frames;
         m_channels = sf_info.channels;
@@ -262,17 +281,19 @@ void DetailDialog::LoadWavFile(wxString fileName)
             return;
         }
 
-        // Draw wave data to background buffer.
+        /** Draw wave data to background buffer. */
 
-        // Create a memory device context
+        /** Create a memory device context */
+
         wxMemoryDC dc;
 
-        // Select the bitmap into the DC
+        /** Select the bitmap into the DC. */
+
         dc.SelectObject(*m_drawBuffer);
 
-        // If an image exists, load it. If not, create and save it for next time.
-        // To speed up this program, generally all these BMP files should already have been generated
-        // by a batch program.
+        /** If an image exists, load it. If not, create and save it for next time. */
+        /** To speed up this program, generally all these BMP files should already have been generated */
+        /** by a batch program. */
 
         wxString mapFile = fileName + ".bmp";
 
@@ -284,27 +305,29 @@ void DetailDialog::LoadWavFile(wxString fileName)
         }
         else
         {
-            // This can be quite a lengthy operation, so change cursor.
+            /** This can be quite a lengthy operation, so change cursor. */
 
             SetCursor(wxCURSOR_WAIT);
 
-            // Set the background
+            /** Set the background. */
+
             dc.SetBackground(*wxBLACK_BRUSH);
 
-            // Color the bitmap green
+            /** Color the bitmap. */
+
             dc.Clear();
 
-            // Draw the left channel;
+            /** Draw the left or only channel. */
 
             dc.SetPen(wxPen(*wxWHITE, 2, wxSOLID));
             int prevX = 0;
             int prevY = 50;
 
-            double yDiv = (double) waveDisplayWidth / (double) m_frameCount;
+            double yDiv = (double) c_waveDisplayWidth / (double) m_frameCount;
 
             for(int idx = 0; idx < m_frameCount; ++idx)
             {
-                double sample = (m_waveData.get())[idx * m_channels]; // LEFT CHANNEL or the only channel if mono
+                double sample = (m_waveData.get())[idx * m_channels]; /** LEFT CHANNEL or the only channel if mono. */
 
                 int newY = (int)(sample * 50.0) + 50;
                 int newX = (double)idx * yDiv;
@@ -315,21 +338,17 @@ void DetailDialog::LoadWavFile(wxString fileName)
                 prevY = newY;
             }
 
-            // Save to disk.
+            /** Save to disk. */
 
             wxBitmap bitmap = dc.GetAsBitmap();
             bitmap.SaveFile(mapFile, wxBITMAP_TYPE_BMP);
 
-            // Hide it.
-
-            // ::SetFileAttributes(mapFile.c_str(), FILE_ATTRIBUTE_HIDDEN);
-
-            // Carry on as usual.
+            /** Carry on as usual. */
 
             SetCursor(wxCURSOR_DEFAULT);
         }
 
-        // Render an inverted bitmap for selecting.
+        /** Render an inverted bitmap for selecting. */
 
         wxMemoryDC inverted_dc;
 
@@ -339,8 +358,8 @@ void DetailDialog::LoadWavFile(wxString fileName)
         (
             0,
             0,
-            waveDisplayWidth,
-            waveDisplayWidth,
+            c_waveDisplayWidth,
+            c_waveDisplayHeight,
             &dc,
             0,
             0,
@@ -348,17 +367,17 @@ void DetailDialog::LoadWavFile(wxString fileName)
             false
         );
 
-        // Now done with the DC's.
+        /** Now done with the DC's. */
 
         dc.SelectObject(wxNullBitmap);
         inverted_dc.SelectObject(wxNullBitmap);
 
-        // Select everything.
+        /** Select everything. */
 
         m_selStart = c_minSel;
         m_selStop = c_maxSel;
 
-        // Redraw panel.
+        /** Redraw panel. */
 
         Panel1->Refresh();
         Panel1->Update();
@@ -390,10 +409,14 @@ void DetailDialog::LoadWavFile(wxString fileName)
     sf_close(snd_file);
 }
 
+//---------------------------------------------------------------------------
+
 void DetailDialog::OnExitButtonClick(wxCommandEvent& event)
 {
     Close();
 }
+
+//---------------------------------------------------------------------------
 
 void DetailDialog::PlayCurrentSelection()
 {
@@ -407,22 +430,28 @@ void DetailDialog::PlayCurrentSelection()
     }
 }
 
+//---------------------------------------------------------------------------
+
 void DetailDialog::OnPlayButtonClick(wxCommandEvent& event)
 {
     PlayCurrentSelection();
 }
+
+//---------------------------------------------------------------------------
 
 void DetailDialog::OnStopButtonClick(wxCommandEvent& event)
 {
     m_sound.Stop();
 }
 
+//---------------------------------------------------------------------------
+
 void DetailDialog::OnPanel1Paint(wxPaintEvent& event)
 {
     wxMemoryDC memDC;
     memDC.SelectObject(*m_drawBuffer);
 
-    // First draw the entire normal bitmap on the destination DC.
+    /** First draw the entire normal bitmap on the destination DC. */
 
     wxBufferedPaintDC destDC(Panel1);
 
@@ -430,8 +459,8 @@ void DetailDialog::OnPanel1Paint(wxPaintEvent& event)
     (
         0,
         0,
-        waveDisplayWidth,
-        waveDisplayHeight,
+        c_waveDisplayWidth,
+        c_waveDisplayHeight,
         &memDC,
         0,
         0,
@@ -441,7 +470,7 @@ void DetailDialog::OnPanel1Paint(wxPaintEvent& event)
 
     memDC.SelectObject(wxNullBitmap);
 
-    // Now copy the selected portion over it.
+    /** Now copy the selected portion over it. */
 
     memDC.SelectObject(*m_invertedBuffer);
 
@@ -450,7 +479,7 @@ void DetailDialog::OnPanel1Paint(wxPaintEvent& event)
         m_selStart,
         0,
         m_selStop - m_selStart,
-        waveDisplayHeight,
+        c_waveDisplayHeight,
         &memDC,
         m_selStart,
         0,
@@ -459,18 +488,22 @@ void DetailDialog::OnPanel1Paint(wxPaintEvent& event)
     );
 }
 
+//---------------------------------------------------------------------------
+
 void DetailDialog::OnPanel1EraseBackground(wxEraseEvent& event)
 {
-    // Do nothing on purpose. Entire thing is drawn in OnPanel1Paint().
+    /** Do nothing on purpose. Entire thing is drawn in OnPanel1Paint(). */
 }
+
+//---------------------------------------------------------------------------
 
 void DetailDialog::OnPanel1LeftDown(wxMouseEvent& event)
 {
-    if(event.GetY() > (waveDisplayHeight * .5))
+    if(event.GetY() > (c_waveDisplayHeight * .5))
     {
-        // Lower half is for grabbing a selection, much like Pro Tools multi tool.
+        /** Lower half is for grabbing a selection, much like Pro Tools multi tool. */
 
-        // If user starts a'dragging, we can be sure they no longer want to hear the selection playing.
+        /** If user starts a'dragging, we can be sure they no longer want to hear the selection playing. */
 
         m_sound.Stop();
 
@@ -492,10 +525,11 @@ void DetailDialog::OnPanel1LeftDown(wxMouseEvent& event)
     }
     else
     {
-        // Upper half of waveform is for selecting, much like Pro Tools multi tool.
-        // With Shift pressed we can extend selection.
+        /** Upper half of waveform is for selecting, much like Pro Tools multi tool. */
 
         m_selecting = true;
+
+        /** With Shift pressed we can extend selection. */
 
         if(GetAsyncKeyState(VK_SHIFT))
         {
@@ -517,17 +551,21 @@ void DetailDialog::OnPanel1LeftDown(wxMouseEvent& event)
     }
 }
 
+//---------------------------------------------------------------------------
+
 void DetailDialog::OnPanel1LeftUp(wxMouseEvent& event)
 {
     m_selecting = false;
 
-    // Auto play if lifting the mouse in selection mode.
+    /** Auto play if lifting the mouse in selection mode. */
 
-    if(event.GetY() <= (waveDisplayHeight * .5))
+    if(event.GetY() <= (c_waveDisplayHeight * .5))
     {
         PlayCurrentSelection();
     }
 }
+
+//---------------------------------------------------------------------------
 
 void DetailDialog::OnPanel1MouseMove(wxMouseEvent& event)
 {
@@ -535,12 +573,12 @@ void DetailDialog::OnPanel1MouseMove(wxMouseEvent& event)
     {
         m_sel2 = event.GetX();
 
-        // Which is sel start and which is sel stop now?
+        /** Which is sel start and which is sel stop now? */
 
         m_selStart = std::min(m_sel1, m_sel2);
         m_selStop = std::max(m_sel1, m_sel2);
 
-        // Guard out of bounds.
+        /** Guard out of bounds. */
 
         m_selStart = std::max(m_selStart, c_minSel);
         m_selStop = std::min(m_selStop, c_maxSel);
@@ -550,25 +588,29 @@ void DetailDialog::OnPanel1MouseMove(wxMouseEvent& event)
     }
     else
     {
-        SetCursor((event.GetY() > (waveDisplayHeight * .5)) ? wxCURSOR_HAND : wxCURSOR_IBEAM);
+        SetCursor((event.GetY() > (c_waveDisplayHeight * .5)) ? wxCURSOR_HAND : wxCURSOR_IBEAM);
     }
 }
+
+//---------------------------------------------------------------------------
 
 void DetailDialog::OnPanel1MouseLeave(wxMouseEvent& event)
 {
-    // It's better if selection stops when the user leaves the boundaries of the panel.
+    /** It's better if selection stops when the user leaves the boundaries of the panel. */
 
     m_selecting = false;
 
-    // In the panel we mimic the Pro Tools multi tool, but when we leave it, we should return to normal.
+    /** In the panel we mimic the Pro Tools multi tool, but when we leave it, we should return to normal. */
 
     SetCursor(wxCURSOR_DEFAULT);
 
-    // Auto play.
-    // Auto play if lifting the mouse in selection mode.
+    /** Auto play if lifting the mouse in selection mode. */
+    /** Bug/feature: plays every time the user leaves the waveform */
 
-    if(event.GetY() <= (waveDisplayHeight * .5))
-    {
-        PlayCurrentSelection();
-    }
+//    if(event.GetY() <= (c_waveDisplayHeight * .5))
+//    {
+//        PlayCurrentSelection();
+//    }
 }
+
+//---------------------------------------------------------------------------

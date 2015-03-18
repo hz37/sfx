@@ -1,0 +1,72 @@
+\hypertarget{class_utility}{\section{Utility Class Reference}
+\label{class_utility}\index{Utility@{Utility}}
+}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static wx\-String \hyperlink{class_utility_a1e1ef24f6c7c1de1e8e5bf8a2c07b278}{include\-Trailing\-Backslash} (const wx\-String folder)
+\begin{DoxyCompactList}\small\item\em Ensure a folder ends with a backslash. \end{DoxyCompactList}\item 
+static wx\-String \hyperlink{class_utility_a711454ada421834a0d0078e8770ea231}{valid\-File\-Name} (const wx\-String description)
+\begin{DoxyCompactList}\small\item\em Turn description into a valid Windows filename. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 25 of file utility.\-h.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_utility_a1e1ef24f6c7c1de1e8e5bf8a2c07b278}{\index{Utility@{Utility}!include\-Trailing\-Backslash@{include\-Trailing\-Backslash}}
+\index{include\-Trailing\-Backslash@{include\-Trailing\-Backslash}!Utility@{Utility}}
+\subsubsection[{include\-Trailing\-Backslash}]{\setlength{\rightskip}{0pt plus 5cm}wx\-String Utility\-::include\-Trailing\-Backslash (
+\begin{DoxyParamCaption}
+\item[{const wx\-String}]{folder}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_utility_a1e1ef24f6c7c1de1e8e5bf8a2c07b278}
+
+
+Ensure a folder ends with a backslash. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em folder} & Input folder with or without trailing backslash. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+wx\-String of folder with a trailing backslash. 
+\end{DoxyReturn}
+
+
+Definition at line 24 of file utility.\-cpp.
+
+\hypertarget{class_utility_a711454ada421834a0d0078e8770ea231}{\index{Utility@{Utility}!valid\-File\-Name@{valid\-File\-Name}}
+\index{valid\-File\-Name@{valid\-File\-Name}!Utility@{Utility}}
+\subsubsection[{valid\-File\-Name}]{\setlength{\rightskip}{0pt plus 5cm}wx\-String Utility\-::valid\-File\-Name (
+\begin{DoxyParamCaption}
+\item[{const wx\-String}]{description}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_utility_a711454ada421834a0d0078e8770ea231}
+
+
+Turn description into a valid Windows filename. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em description} & Input to turn into a filename \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Description in such a form that it can be used as a filename under Windows O\-S.
+\end{DoxyReturn}
+We take a bit of a sharp turn, because we disallow everything but chars, numbers and spaces. And use a max 128 char filename (M\-A\-X\-\_\-\-P\-A\-T\-H in Win32 is longer). 
+
+Definition at line 52 of file utility.\-cpp.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+sfx/utility.\-h\item 
+sfx/utility.\-cpp\end{DoxyCompactItemize}

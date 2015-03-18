@@ -231,7 +231,7 @@ void sfxFrame::OnAbout(wxCommandEvent& event)
 {
     wxMessageBox
     (
-        _("Programming: Hens Zimmerman\nEmail: hz37@xs4all.nl\nVersion: February 16, 2015."),
+        _("Programming: Hens Zimmerman\nEmail: hz37@xs4all.nl\nVersion: March 18, 2015."),
         _("About...")
     );
 }
@@ -320,7 +320,7 @@ void sfxFrame::OnSaveFolderButtonClick(wxCommandEvent& event)
 
     if(DirDialog1->ShowModal() != wxID_CANCEL)
     {
-        m_saveFolder = includeTrailingBackslash(DirDialog1->GetPath());
+        m_saveFolder = Utility::includeTrailingBackslash(DirDialog1->GetPath());
         StatusBar1->SetLabel(m_saveFolder);
 
         if(m_saveFolder.Length())
@@ -366,7 +366,7 @@ void sfxFrame::OnSaveToFolderButtonClick(wxCommandEvent& event)
 
 //    wxFileName fileNameParser(source);
 //    wxString destination = m_saveFolder + fileNameParser.GetName() + _(".wav");
-    wxString destination = m_saveFolder + validFileName(description) + _(".wav");
+    wxString destination = m_saveFolder + Utility::validFileName(description) + _(".wav");
     wxCopyFile(source, destination, true);
 }
 
