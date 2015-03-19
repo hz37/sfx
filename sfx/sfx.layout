@@ -3,7 +3,7 @@
 	<ActiveTarget name="Release" />
 	<File name="DetailDialog.cpp" open="1" top="1" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="16762" topLine="576" />
+			<Cursor1 position="17325" topLine="576" />
 		</Cursor>
 	</File>
 	<File name="DetailDialog.h" open="1" top="0" tabpos="8" split="0" active="1" splitpos="340" zoom_1="0" zoom_2="0">

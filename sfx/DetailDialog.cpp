@@ -598,19 +598,19 @@ void DetailDialog::OnPanel1MouseLeave(wxMouseEvent& event)
 {
     /** It's better if selection stops when the user leaves the boundaries of the panel. */
 
-    m_selecting = false;
+    if(m_selecting)
+    {
+        m_selecting = false;
+
+        /** Auto play if lifting the mouse in selection mode. */
+
+        PlayCurrentSelection();
+    }
 
     /** In the panel we mimic the Pro Tools multi tool, but when we leave it, we should return to normal. */
 
     SetCursor(wxCURSOR_DEFAULT);
 
-    /** Auto play if lifting the mouse in selection mode. */
-    /** Bug/feature: plays every time the user leaves the waveform */
-
-//    if(event.GetY() <= (c_waveDisplayHeight * .5))
-//    {
-//        PlayCurrentSelection();
-//    }
 }
 
 //---------------------------------------------------------------------------
