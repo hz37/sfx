@@ -21,6 +21,7 @@
 #include <wx/dcbuffer.h>
 #include <wx/dnd.h>
 #include <wx/filefn.h>
+#include <wx/filename.h>
 #include <wx/msgdlg.h>
 #include <wx/stdpaths.h>
 
@@ -82,10 +83,13 @@ DetailDialog::DetailDialog
     wxWindow* parent,
     wxString filename,
     wxString description,
+    wxString saveFolder,
     wxWindowID id,
     const wxPoint& pos
 ) :
     m_filename(filename),
+    m_description(description),
+    m_saveFolder(saveFolder),
     m_channels(0),
     m_frameCount(0),
     m_sampleRate(0),
@@ -132,7 +136,7 @@ DetailDialog::DetailDialog
 
 	/** Show description of this sound effect. */
 
-	DescriptionStaticText->SetLabel(description);
+	DescriptionStaticText->SetLabel(m_description);
 
 	/** Set up a path for the temp files. */
 
@@ -503,7 +507,7 @@ void DetailDialog::OnPanel1LeftDown(wxMouseEvent& event)
     {
         /** Lower half is for grabbing a selection, much like Pro Tools multi tool. */
 
-        /** If user starts a'dragging, we can be sure they no longer want to hear the selection playing. */
+        /** If user starts dragging, we can be sure they no longer want to hear the selection playing. */
 
         m_sound.Stop();
 
@@ -521,6 +525,15 @@ void DetailDialog::OnPanel1LeftDown(wxMouseEvent& event)
             /*wxDragResult dragResult = */ dragSource.DoDragDrop();
 
             wxDELETE(data);
+
+            /** If a save folder was specified, we copy the file to there too. */
+
+            if(m_saveFolder.length() > 0)
+            {
+                wxFileName fileNameParser(fileName);
+                wxString destination = m_saveFolder + fileNameParser.GetName() + _(".wav");
+                wxCopyFile(fileName, destination, true);
+            }
         }
     }
     else

@@ -364,8 +364,6 @@ void sfxFrame::OnSaveToFolderButtonClick(wxCommandEvent& event)
     wxString source = m_model.searchedFileNameAt(index);
     wxString description = m_model.searchedDescriptionAt(index);
 
-//    wxFileName fileNameParser(source);
-//    wxString destination = m_saveFolder + fileNameParser.GetName() + _(".wav");
     wxString destination = m_saveFolder + Utility::validFileName(description) + _(".wav");
     wxCopyFile(source, destination, true);
 }
@@ -476,7 +474,7 @@ void sfxFrame::OnDetailButtonClick(wxCommandEvent& event)
 
     // Show dialog and not interested in modal result on purpose.
 
-    DetailDialog dlg(this, filename, description);
+    DetailDialog dlg(this, filename, description, m_saveFolder);
 
     dlg.ShowModal();
 }

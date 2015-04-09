@@ -180,50 +180,6 @@ wxString model::fileNameAt(const int index)
     return m_sfxRootDirectory + m_fileNames[index];
 }
 
-// Return metadata of this file using TagLib.
-
-//wxString model::metaData(wxString filename)
-//{
-    /*
-    wxString metaData;
-
-    const char* filenameAsCharBuffer = filename.mb_str(wxConvUTF8);
-    TagLib::FileRef fileRef(filenameAsCharBuffer);
-
-    if(!fileRef.isNull() && fileRef.audioProperties())
-    {
-        TagLib::AudioProperties* properties = fileRef.audioProperties();
-
-        const int seconds = properties->length() % 60;
-        const int minutes = (properties->length() - seconds) / 60;
-        const int samplerate = properties->sampleRate();
-        const int channels = properties->channels();
-
-        metaData << filename << ":\n"
-                 << "Duration: " << wxString::Format("%.02d:%.02d", minutes, seconds) << "\n"
-                 << samplerate << " kHz\n"
-                 << channels << (channels == 1 ? " channel\n" : " channels\n");
-
-        TagLib::PropertyMap tags = fileRef.file()->properties();
-
-        for(TagLib::PropertyMap::ConstIterator i = tags.begin(); i != tags.end(); ++i)
-        {
-            for(TagLib::StringList::ConstIterator j = i->second.begin(); j != i->second.end(); ++j)
-            {
-                metaData << i->first.toCString() << ": " << j->toCString() << "\n";
-            }
-        }
-    }
-    else
-    {
-        metaData = "Could not read metadata for this file.\n" + filename;
-    }
-
-    return metaData;
-    */
-
-//    return "Not implemented";
-//}
 
 // Do case insensitive search.
 // Descriptions have already been forced into lowercase on reading the datafile!

@@ -34,6 +34,7 @@ class DetailDialog: public wxDialog
             wxWindow* parent,
             wxString filename,
             wxString description,
+            wxString saveFolder,
             wxWindowID id=wxID_ANY,
             const wxPoint& pos=wxDefaultPosition
         );
@@ -89,6 +90,8 @@ class DetailDialog: public wxDialog
 
         wxString m_filename; /**< File we are currently looking at. */
         wxString m_storageDirectory; /**< Directory where files will be stored. */
+        wxString m_description; /**< Remember file description. */
+        wxString m_saveFolder; /**< A possible folder to save partial files to (to collect them). */
 
         wxBitmap* m_drawBuffer; /**< Drawing buffer for waveform view. */
         wxBitmap* m_invertedBuffer; /**< Auto generated inverted version of m_drawBuffer. */
